@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="40.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameController">
+
+    <Label layoutX="308.0" layoutY="5.0" prefHeight="21.0" prefWidth="196.0" text="Points:">
+        <font>
+            <Font name="Monotype Corsiva" size="23.0" />
+        </font>
+    </Label>
+</Pane>
