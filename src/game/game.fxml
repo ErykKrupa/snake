@@ -7,12 +7,12 @@
 
 <Pane prefHeight="40.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameController">
 
-   <Button layoutX="51.0" layoutY="2.0" onAction="#handleMenuClick" text="Menu">
+   <Button layoutX="51.0" layoutY="2.0" onAction="#handleMenuClick" text="_Menu">
        <font>
            <Font name="Monotype Corsiva" size="18.0" />
        </font>
    </Button>
-    <Button layoutX="153.0" layoutY="2.0" onAction="#handlePauseClick" text="Pause">
+    <Button layoutX="153.0" layoutY="2.0" onAction="#handlePauseClick" text="Pa_use">
         <font>
             <Font name="Monotype Corsiva" size="18.0" />
         </font>
@@ -27,13 +27,13 @@
             <Font name="Monotype Corsiva" size="23.0" />
         </font>
     </Label>
-    <Label layoutX="467.0" layoutY="5.0" prefHeight="30.0" prefWidth="52.0" text="0">
+    <Label fx:id="scoreLabel" alignment="CENTER" layoutX="467.0" layoutY="5.0" prefHeight="30.0" prefWidth="52.0" text="0">
         <font>
             <Font name="Monotype Corsiva" size="23.0" />
         </font>
    </Label>
-    <Button layoutX="230.0" layoutY="4.0" prefHeight="30.0" prefWidth="40.0" text="&lt;-" onAction="#handleLeftClick" />
-    <Button layoutX="270.0" layoutY="4.0" prefHeight="30.0" prefWidth="40.0" text="^^" onAction="#handleUpClick"/>
-    <Button layoutX="310.0" layoutY="4.0" prefHeight="30.0" prefWidth="40.0" text="vv" onAction="#handleDownClick"/>
-    <Button layoutX="350.0" layoutY="4.0" prefHeight="30.0" prefWidth="40.0" text="-&gt;" onAction="#handleRightClick"/>
+    <Button layoutX="230.0" layoutY="4.0" onAction="#handleLeftClick" prefHeight="30.0" prefWidth="40.0" text="&lt;-" />
+    <Button layoutX="270.0" layoutY="4.0" onAction="#handleUpClick" prefHeight="30.0" prefWidth="40.0" text="^^" />
+    <Button layoutX="310.0" layoutY="4.0" onAction="#handleDownClick" prefHeight="30.0" prefWidth="40.0" text="vv" />
+    <Button layoutX="350.0" layoutY="4.0" onAction="#handleRightClick" prefHeight="30.0" prefWidth="40.0" text="-&gt;" />
 </Pane>

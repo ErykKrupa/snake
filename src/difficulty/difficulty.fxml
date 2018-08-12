@@ -11,22 +11,22 @@
             <Font name="Monotype Corsiva" size="25.0" />
         </font>
     </Label>
-    <Button layoutX="51.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleEasyClick" prefHeight="43.0" prefWidth="107.0" text="Easy">
+    <Button layoutX="51.0" layoutY="297.0" onAction="#handleEasyClick" prefHeight="43.0" prefWidth="107.0" text="Easy">
         <font>
             <Font name="Monotype Corsiva" size="20.0" />
         </font>
     </Button>
-    <Button layoutX="217.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleMediumClick" prefHeight="43.0" prefWidth="107.0" text="Medium">
+    <Button layoutX="217.0" layoutY="297.0" onAction="#handleMediumClick" prefHeight="43.0" prefWidth="107.0" text="Medium">
         <font>
             <Font name="Monotype Corsiva" size="20.0" />
         </font>
     </Button>
-    <Button layoutX="383.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleHardClick" prefHeight="43.0" prefWidth="107.0" text="Hard">
+    <Button layoutX="383.0" layoutY="297.0" onAction="#handleHardClick" prefHeight="43.0" prefWidth="107.0" text="Hard">
         <font>
             <Font name="Monotype Corsiva" size="20.0" />
         </font>
     </Button>
-    <Button layoutX="239.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleMenuClick" prefHeight="35.0" prefWidth="63.0" text="Menu">
+    <Button layoutX="239.0" layoutY="370.0" onAction="#handleMenuClick" prefHeight="35.0" prefWidth="63.0" text="Menu">
         <font>
             <Font name="Monotype Corsiva" size="18.0" />
         </font>

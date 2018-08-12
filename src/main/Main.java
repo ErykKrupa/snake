@@ -7,10 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class Main extends Application {
+public class Main extends Application
+{
     public static Stage stage = new Stage();
-
-
     @Override
     public void start(Stage stage) throws IOException
     {
@@ -21,7 +20,6 @@ public class Main extends Application {
         Main.stage.setResizable(false);
         Main.stage.show();
     }
-
     public static void main(String[] args)
     {
         launch(args);

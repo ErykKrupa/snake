@@ -16,22 +16,22 @@
              <Font name="Monotype Corsiva" size="50.0" />
         </font>
     </Label>
-    <Button layoutX="196.0" layoutY="141.0" mnemonicParsing="false" onAction="#handlePlayClick" prefHeight="50.0" prefWidth="150.0" text="Play">
+    <Button layoutX="196.0" layoutY="141.0" onAction="#handlePlayClick" prefHeight="50.0" prefWidth="150.0" text="Play">
         <font>
             <Font name="Monotype Corsiva" size="25.0" />
          </font>
     </Button>
-    <Button layoutX="195.0" layoutY="210.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="High Scores">
+    <Button layoutX="195.0" layoutY="210.0" prefHeight="50.0" prefWidth="150.0" text="High Scores">
         <font>
             <Font name="Monotype Corsiva" size="25.0" />
         </font>
     </Button>
-    <Button layoutX="196.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleCreditClick" prefHeight="50.0" prefWidth="150.0" text="Credit">
+    <Button layoutX="196.0" layoutY="281.0" onAction="#handleCreditClick" prefHeight="50.0" prefWidth="150.0" text="Credit">
         <font>
             <Font name="Monotype Corsiva" size="25.0" />
         </font>
     </Button>
-    <Button layoutX="196.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleExitClick" prefHeight="50.0" prefWidth="150.0" text="Exit">
+    <Button layoutX="196.0" layoutY="347.0" onAction="#handleExitClick" prefHeight="50.0" prefWidth="150.0" text="Exit">
         <font>
             <Font name="Monotype Corsiva" size="25.0" />
         </font>

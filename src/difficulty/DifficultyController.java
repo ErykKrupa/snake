@@ -9,14 +9,15 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import main.Main;
-import game.*;
 import static main.Main.*;
+import static game.GameController.*;
 
 
 public class DifficultyController
 {
-    public static SnakePart[][] snake = new SnakePart[18][14];
+    public static GameField[][] gameFields = new GameField[18][14];
     private void game()
     {
         stage.setTitle("Snake");
@@ -31,20 +32,19 @@ public class DifficultyController
                 if (i == 0 || i == 17 || j == 0 || j == 13)
                 {
                     rectangles[i][j].setFill(Color.web("#006633"));
-                    snake[i][j] = new SnakePart(15, true);
+                    gameFields[i][j] = new GameField(15, i, j,true);
                 }
                 else
                 {
-                    if ((i+j) % 2 == 0) rectangles[i][j].setFill(Color.web("#19a56f45"));
+                    if ((i + j) % 2 == 0) rectangles[i][j].setFill(Color.web("#19a56f45"));
                     else rectangles[i][j].setFill(Color.web("#19a56f6f"));
-                    snake[i][j] = new SnakePart(15, false);
+                    gameFields[i][j] = new GameField(15, i, j, false);
                 }
                 GridPane.setConstraints(rectangles[i][j], i, j);
-                GridPane.setConstraints(snake[i][j], i, j);
-                gridPane.getChildren().addAll(rectangles[i][j], snake[i][j]);
+                GridPane.setConstraints(gameFields[i][j], i, j);
+                gridPane.getChildren().addAll(rectangles[i][j], gameFields[i][j]);
             }
         }
-
         Pane pane;
         try
         {
@@ -53,10 +53,17 @@ public class DifficultyController
             vbox.getChildren().addAll(gridPane, pane);
         }
         catch(IOException ignored){}
-        Scene gameScene = new Scene(vbox);
-        stage.setScene(gameScene);
-        GameController.setSnake();
-
+        stage.setScene(new Scene(vbox));
+        snake  = new ArrayList<>();
+        for(int i = 3; i <= 5; i++)
+        {
+            snake.add(gameFields[i][7]);
+            gameFields[i][7].setSnake(true);
+            gameFields[i][7].setFill(Color.web("#000000"));
+        }
+        gameFields[13][7].setFood(true);
+        gameFields[13][7].setFill(Color.web("#999999"));
+        scoreToZero();
     }
     @FXML private void handleEasyClick()
     {
