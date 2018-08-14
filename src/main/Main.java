@@ -20,6 +20,7 @@ public class Main extends Application
         Main.stage.setResizable(false);
         Main.stage.show();
     }
+
     public static void main(String[] args)
     {
         launch(args);

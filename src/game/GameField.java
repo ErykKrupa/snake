@@ -1,4 +1,4 @@
-package difficulty;
+package game;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -8,7 +8,7 @@ public class GameField extends Circle
     private boolean isSnake = false, isFood = false, isWall = false;
     private int coord1, coord2;
 
-    GameField(double radius, int coord1, int coord2, boolean wall)
+    public GameField(double radius, int coord1, int coord2, boolean wall)
     {
         super(radius, Color.web("#00000000"));
         this.coord1 = coord1;
@@ -16,7 +16,7 @@ public class GameField extends Circle
         if(wall) isWall = true;
     }
 
-    public boolean getSnake()
+    boolean getSnake()
     {
         return isSnake;
     }
@@ -26,7 +26,7 @@ public class GameField extends Circle
         isSnake = snake;
     }
 
-    public boolean getFood()
+    boolean getFood()
     {
         return isFood;
     }
@@ -36,20 +36,18 @@ public class GameField extends Circle
         isFood = food;
     }
 
-    public boolean getWall()
+    boolean getWall()
     {
         return isWall;
     }
 
-    public int getCoord1()
+    int getCoord1()
     {
         return coord1;
     }
 
-    public int getCoord2()
+    int getCoord2()
     {
         return coord2;
     }
-
-
 }

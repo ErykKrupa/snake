@@ -18,6 +18,7 @@ public class MenuController
         Scene difficultyScene = new Scene(parent);
         stage.setScene(difficultyScene);
     }
+
     @FXML private void handleCreditClick()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -26,6 +27,7 @@ public class MenuController
         alert.setContentText("Author: Eryk Krupa.");
         alert.showAndWait();
     }
+
     @FXML private void handleExitClick()
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
