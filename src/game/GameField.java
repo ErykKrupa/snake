@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 
 public class GameField extends Circle
 {
-    private boolean isSnake = false, isFood = false, isWall = false;
+    private boolean isSnake = false, isFood = false, isWall;
     private int coord1, coord2;
 
     public GameField(double radius, int coord1, int coord2, boolean wall)
@@ -13,7 +13,7 @@ public class GameField extends Circle
         super(radius, Color.web("#00000000"));
         this.coord1 = coord1;
         this.coord2 = coord2;
-        if(wall) isWall = true;
+        isWall = wall;
     }
 
     boolean getSnake()

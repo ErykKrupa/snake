@@ -15,8 +15,7 @@ public class Main extends Application
     {
         Main.stage.setTitle("Snake Game");
         Parent parent = FXMLLoader.load(getClass().getResource("../menu/menu.fxml"));
-        Scene menuScene = new Scene(parent, 540, 420);
-        Main.stage.setScene(menuScene);
+        Main.stage.setScene(new Scene(parent, 540, 420));
         Main.stage.setResizable(false);
         Main.stage.show();
     }

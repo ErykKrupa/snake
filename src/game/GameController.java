@@ -6,40 +6,27 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.IOException;
-import main.Main;
+import static main.Main.stage;
 import static difficulty.DifficultyController.*;
 
 public class GameController implements Runnable
 {
     public static GameField[][] gameFields = new GameField[18][14];
     public static ArrayList<GameField> snake;
-    private static boolean isSnakeStuffed = false;
-    private static Random random = new Random();
+    private static String name;
+    private static int time;
+    private static int level;
+    private static int coord1, coord2;
     private static String direction = "right";
     private static String illegalDirection = "left";
+    private static Random random = new Random();
+    private static boolean isSnakeStuffed = false;
     private static int score = 0;
-    private static int coord1, coord2;
     private boolean running = true;
-    private static int time;
-
-    public static void setTime(int time)
-    {
-        GameController.time = time;
-    }
-
-    public void setDirection(String direction)
-    {
-        if(!direction.equals(illegalDirection))
-            GameController.direction = direction;
-    }
-
-    private void terminate()
-    {
-        running = false;
-    }
+    private boolean sleeping = false;
 
     public void run()
     {
@@ -49,7 +36,21 @@ public class GameController implements Runnable
             {
                 Thread.sleep(time);
             }
-            catch (InterruptedException ignore) {}
+            catch (InterruptedException ie)
+            {
+                System.err.println("InterruptedException: " + ie.getMessage());
+            }
+            while(sleeping)
+            {
+                try
+                {
+                    Thread.sleep(10);
+                }
+                catch (InterruptedException ie)
+                {
+                    System.err.println("InterruptedException: " + ie.getMessage());
+                }
+            }
             Platform.runLater(() ->
             {
                 if (running)
@@ -82,19 +83,56 @@ public class GameController implements Runnable
                     if (!setHeadSnake(gameFields[coord1][coord2]))
                     {
                         terminate();
+                        String filePath = "highscores\\highscores" + level + ".txt";
+                        StringBuilder beforeResult = new StringBuilder();
+                        StringBuilder afterResult = new StringBuilder();
+                        try(BufferedReader reader = new BufferedReader(new FileReader(filePath)))
+                        {
+                            String line = reader.readLine();
+                            while(line != null)
+                            {
+                                int result = Integer.parseInt(line);
+                                if (result >= score)
+                                {
+                                    beforeResult.append(result).append(System.lineSeparator());
+                                    beforeResult.append(reader.readLine()).append(System.lineSeparator());
+                                }
+                                else
+                                {
+                                    afterResult.append(result).append(System.lineSeparator());
+                                    afterResult.append(reader.readLine()).append(System.lineSeparator());
+                                }
+                                line = reader.readLine();
+                            }
+                        }
+                        catch(IOException ioe)
+                        {
+                            System.err.println("IOException: " + ioe.getMessage());
+                        }
+                        try(FileWriter writer = new FileWriter(filePath))
+                        {
+                            writer.write(beforeResult + Integer.toString(score) + System.lineSeparator()
+                                    + name + System.lineSeparator() + afterResult);
+                        }
+                        catch(IOException ioe)
+                        {
+                            System.err.println("IOException: " + ioe.getMessage());
+                        }
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText(null);
-                        alert.setContentText("Game over! You score is "+score+".");
+                        alert.setContentText("Game over! Your score is " + score + ".");
                         alert.showAndWait();
-                        Main.stage.setTitle("Snake Game");
+                        stage.setTitle("Snake Game");
                         try
                         {
                             Parent parent = FXMLLoader.load(getClass().getResource("../menu/menu.fxml"));
-                            Scene menuScene = new Scene(parent, 540, 420);
-                            Main.stage.setScene(menuScene);
+                            stage.setScene(new Scene(parent, 540, 420));
                         }
-                        catch (IOException ignored) {}
+                        catch (IOException ioe)
+                        {
+                            System.err.println("IOException: " + ioe.getMessage());
+                        }
                     }
                 }
             });
@@ -102,6 +140,31 @@ public class GameController implements Runnable
         direction = "right";
         illegalDirection = "left";
         score = 0;
+    }
+
+    public static void setName(String name)
+    {
+        GameController.name = name;
+    }
+
+    public static void setTime(int time)
+    {
+        GameController.time = time;
+    }
+
+    public static void setLevel(int level)
+    {
+        GameController.level = level;
+    }
+
+    public void setDirection(String direction)
+    {
+        if(!direction.equals(illegalDirection))
+        {
+            GameController.direction = direction;
+            sleeping = false;
+            pauseLabel.setVisible(false);
+        }
     }
 
     private void removeTailSnake(GameField gf)
@@ -132,12 +195,29 @@ public class GameController implements Runnable
 
     private void eatFood()
     {
+        isSnakeStuffed = true;
         scoreLabel.setText(Integer.toString(++score));
         GameField food;
         do food = gameFields[random.nextInt(16) + 1][random.nextInt(12) + 1];
         while (food.getSnake());
         food.setFood(true);
         food.setFill(Color.web("999999"));
-        isSnakeStuffed = true;
     }
+
+    public void terminate()
+    {
+        running = false;
+    }
+
+    public void changeSleeping()
+    {
+        sleeping = !sleeping;
+        pauseLabel.setVisible(sleeping);
+    }
+
+    public boolean getSleeping()
+    {
+        return sleeping;
+    }
+
 }

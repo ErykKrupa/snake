@@ -6,7 +6,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -14,11 +16,10 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import java.io.IOException;
 import java.util.ArrayList;
-import main.Main;
-import game.GameController;
-import game.GameField;
+import game.*;
 import static main.Main.*;
 import static game.GameController.*;
 
@@ -26,8 +27,44 @@ public class DifficultyController
 {
     private static GameController gameController = new GameController();
     private static Label difficultyLabel = new Label();
-    private static Label pointsLabel = new Label("Points:");
+    public static Label pauseLabel = new Label("Pause");
     public static Label scoreLabel = new Label();
+    @FXML private TextField nameTextField = new TextField();
+
+    @FXML private void easyClick()
+    {
+        checkName("Easy", 300, 1);
+    }
+
+    @FXML private void mediumClick()
+    {
+        checkName("Medium", 200, 2);
+    }
+
+    @FXML private void hardClick()
+    {
+        checkName("Hard", 100, 3);
+    }
+
+    private void checkName(String difficulty, int time, int level)
+    {
+        if(nameTextField.getText().equals(""))
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Firstly set your name.");
+            alert.showAndWait();
+        }
+        else
+        {
+            setName(nameTextField.getText());
+            difficultyLabel.setText("Difficulty: " + difficulty);
+            setTime(time);
+            setLevel(level);
+            game();
+        }
+    }
 
     private void game()
     {
@@ -56,15 +93,20 @@ public class DifficultyController
                 gridPane.getChildren().addAll(rectangles[i][j], gameFields[i][j]);
             }
         }
+        Font font = new Font("Monotype Corsiva", 23);
         difficultyLabel.relocate(50, 4);
         difficultyLabel.setAlignment(Pos.CENTER);
-        difficultyLabel.setFont(new Font("Monotype Corsiva", 23));
+        difficultyLabel.setFont(font);
+        pauseLabel.relocate(275, 4);
+        pauseLabel.setFont(Font.font("Monotype Corsiva", FontPosture.ITALIC, 23));
+        pauseLabel.setVisible(false);
+        Label pointsLabel = new Label("Points:");
         pointsLabel.relocate(406, 4);
-        pointsLabel.setFont(new Font("Monotype Corsiva", 23));
+        pointsLabel.setFont(font);
         scoreLabel.setText("0");
         scoreLabel.relocate(470, 5);
-        scoreLabel.setFont(new Font("Monotype Corsiva", 23));
-        Pane pane = new Pane(difficultyLabel, pointsLabel, scoreLabel);
+        scoreLabel.setFont(font);
+        Pane pane = new Pane(difficultyLabel, pauseLabel, pointsLabel, scoreLabel);
         pane.setPrefSize(540, 40);
         pane.setBackground(new Background(new BackgroundFill(Color.web("#006633df"), CornerRadii.EMPTY, Insets.EMPTY)));
         vbox.getChildren().addAll(gridPane, pane);
@@ -89,43 +131,32 @@ public class DifficultyController
         Runnable rRight = ()-> gameController.setDirection("right");
         Runnable rUp = ()-> gameController.setDirection("up");
         Runnable rDown = ()-> gameController.setDirection("down");
-        Runnable rSpace = () -> System.out.println("here will be pause");
-        Runnable rEscape = () -> System.out.println("here will be back to menu");
+        Runnable rSpace = () -> gameController.changeSleeping();
+        Runnable rEscape = this::menu;
         scene.getAccelerators().put(kLeft, rLeft);
         scene.getAccelerators().put(kRight, rRight);
         scene.getAccelerators().put(kUp, rUp);
         scene.getAccelerators().put(kDown, rDown);
         scene.getAccelerators().put(kSpace, rSpace);
         scene.getAccelerators().put(kEscape, rEscape);
-        new Thread(new GameController()).start();
+        Thread thread = new Thread(gameController = new GameController());
+        thread.setDaemon(true);
+        thread.start();
     }
 
-    @FXML private void handleEasyClick()
+    @FXML private void menu()
     {
-        difficultyLabel.setText("Difficulty: Easy");
-        setTime(300);
-        game();
-    }
-
-    @FXML private void handleMediumClick()
-    {
-        difficultyLabel.setText("Difficulty: Medium");
-        setTime(200);
-        game();
-    }
-
-    @FXML private void handleHardClick()
-    {
-        difficultyLabel.setText("Difficulty: Hard");
-        setTime(100);
-        game();
-    }
-
-    @FXML private void handleMenuClick() throws IOException
-    {
-        Main.stage.setTitle("Snake Game");
-        Parent parent = FXMLLoader.load(getClass().getResource("../menu/menu.fxml"));
-        Scene menuScene = new Scene(parent, 540, 420);
-        Main.stage.setScene(menuScene);
+        try
+        {
+            gameController.terminate();
+            if(gameController.getSleeping()) gameController.changeSleeping();
+            stage.setTitle("Snake Game");
+            Parent parent = FXMLLoader.load(getClass().getResource("../menu/menu.fxml"));
+            stage.setScene(new Scene(parent, 540, 420));
+        }
+        catch (IOException ioe)
+        {
+            System.err.println("IOException: " + ioe.getMessage());
+        }
     }
 }
