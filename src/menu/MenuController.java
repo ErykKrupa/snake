@@ -34,24 +34,23 @@ public class MenuController
         stage.setTitle("High Scores");
         Pane pane = FXMLLoader.load(getClass().getResource("../highscores/highscores.fxml"));
         GridPane gridPane = new GridPane();
-        for(int i = 1; i <=6; i++)
+        for(int i = 1; i <= 6; i++)
             if(i % 2 == 1) gridPane.getColumnConstraints().add(new ColumnConstraints(130));
             else gridPane.getColumnConstraints().add(new ColumnConstraints(50));
         Label[][] labels = new Label[6][10];
         for(int i = 0; i < 6; i += 2)
         {
-            String filePath = "highscores\\highscores" + (i / 2 + 1) + ".txt";
-            try(BufferedReader reader = new BufferedReader(new FileReader(filePath)))
+            String filePath = "highscores\\highscores" + (i / 2 + 1);
+            try(DataInputStream inputStream = new DataInputStream(new FileInputStream(filePath)))
             {
-                for(int j = 0; j<10; j++)
+                for(int j = 0; j < 10; j++)
                 {
-                    String result = reader.readLine();
-                    if(result != null)
+                    try
                     {
-                        labels[i][j] = new Label(j + 1 + ". " + reader.readLine());
-                        labels[i + 1][j] = new Label(result);
+                        labels[i][j] = new Label(j + 1 + ". " + inputStream.readUTF());
+                        labels[i + 1][j] = new Label(Integer.toString(inputStream.readInt()));
                     }
-                    else
+                    catch(IOException ioe)
                     {
                         labels[i][j] = new Label(j + 1 + ". ....................");
                         labels[i + 1][j] = new Label("......");
@@ -64,25 +63,20 @@ public class MenuController
                 for(int j = 0; j < 10; j++)
                 {
                     labels[i][j] = new Label(j + 1 + ". ....................");
-                    labels[i+1][j] = new Label("......");
+                    labels[i + 1][j] = new Label("......");
                 }
             }
-            catch(IOException ioe)
-            {
-                System.err.println("IOException: " + ioe.getMessage());
-            }
-            for(int j = 0; j<10; j++)
+            for(int j = 0; j < 10; j++)
             {
                 labels[i][j].setFont(new Font("Monotype Corsiva", 18));
-                labels[i+1][j].setFont(new Font("Monotype Corsiva", 18));
+                labels[i + 1][j].setFont(new Font("Monotype Corsiva", 18));
                 GridPane.setConstraints(labels[i][j], i, j);
-                GridPane.setConstraints(labels[i+1][j], i + 1, j);
+                GridPane.setConstraints(labels[i + 1][j], i + 1, j);
                 GridPane.setMargin(labels[i][j], new Insets(5, 10, 5, 10));
                 GridPane.setMargin(labels[i + 1][j], new Insets(5, 10, 5, 10));
                 gridPane.getChildren().addAll(labels[i][j], labels[i + 1][j]);
             }
         }
-
         Button button = new Button("OK");
         button.setFont(new Font("Monotype Corsiva", 18));
         button.setMaxSize(100, 20);

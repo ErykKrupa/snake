@@ -6,9 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
+
 import static main.Main.stage;
 import static difficulty.DifficultyController.*;
 
@@ -83,41 +86,7 @@ public class GameController implements Runnable
                     if (!setHeadSnake(gameFields[coord1][coord2]))
                     {
                         terminate();
-                        String filePath = "highscores\\highscores" + level + ".txt";
-                        StringBuilder beforeResult = new StringBuilder();
-                        StringBuilder afterResult = new StringBuilder();
-                        try(BufferedReader reader = new BufferedReader(new FileReader(filePath)))
-                        {
-                            String line = reader.readLine();
-                            while(line != null)
-                            {
-                                int result = Integer.parseInt(line);
-                                if (result >= score)
-                                {
-                                    beforeResult.append(result).append(System.lineSeparator());
-                                    beforeResult.append(reader.readLine()).append(System.lineSeparator());
-                                }
-                                else
-                                {
-                                    afterResult.append(result).append(System.lineSeparator());
-                                    afterResult.append(reader.readLine()).append(System.lineSeparator());
-                                }
-                                line = reader.readLine();
-                            }
-                        }
-                        catch(IOException ioe)
-                        {
-                            System.err.println("IOException: " + ioe.getMessage());
-                        }
-                        try(FileWriter writer = new FileWriter(filePath))
-                        {
-                            writer.write(beforeResult + Integer.toString(score) + System.lineSeparator()
-                                    + name + System.lineSeparator() + afterResult);
-                        }
-                        catch(IOException ioe)
-                        {
-                            System.err.println("IOException: " + ioe.getMessage());
-                        }
+                        writeToFile();
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText(null);
@@ -196,6 +165,17 @@ public class GameController implements Runnable
     private void eatFood()
     {
         isSnakeStuffed = true;
+        try
+        {
+            Clip clip = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("sound\\Pop.wav"));
+            clip.open(inputStream);
+            clip.start();
+        }
+        catch(Exception e)
+        {
+            System.err.println("Exception: " + e.getMessage());
+        }
         scoreLabel.setText(Integer.toString(++score));
         GameField food;
         do food = gameFields[random.nextInt(16) + 1][random.nextInt(12) + 1];
@@ -220,4 +200,39 @@ public class GameController implements Runnable
         return sleeping;
     }
 
+    private void writeToFile()
+    {
+        String filePath = "highscores\\highscores" + level;
+        LinkedList<Integer> integers = new LinkedList<>();
+        LinkedList<String> strings = new LinkedList<>();
+        try(DataInputStream inputStream = new DataInputStream(new FileInputStream(filePath)))
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                strings.add(inputStream.readUTF());
+                integers.add(inputStream.readInt());
+            }
+        }
+        catch(FileNotFoundException fnfe)
+        {
+            System.err.println("FileNotFoundException: " + fnfe.getMessage());
+        }
+        catch(IOException ignore) {}
+        int count = 0;
+        while(integers.size() != count && integers.get(count) >= score) count++;
+        integers.add(count, score);
+        strings.add(count, name);
+        try(DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(filePath)))
+        {
+            for(int i = 0; i < integers.size() && i < 10; i++)
+            {
+                outputStream.writeUTF(strings.get(i));
+                outputStream.writeInt(integers.get(i));
+            }
+        }
+        catch(IOException ioe)
+        {
+            System.err.println("IOException: " + ioe.getMessage());
+        }
+    }
 }

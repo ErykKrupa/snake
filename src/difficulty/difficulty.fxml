@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="420.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="difficulty.DifficultyController">
+<Pane prefHeight="420.0" prefWidth="540.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="difficulty.DifficultyController">
     <Label layoutX="193.0" layoutY="50.0" text="Enter your name:">
         <font>
             <Font name="Monotype Corsiva" size="25.0" />
@@ -42,5 +42,4 @@
             <Font name="Monotype Corsiva" size="18.0" />
         </font>
     </Button>
-
 </Pane>

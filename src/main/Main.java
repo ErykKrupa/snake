@@ -10,6 +10,7 @@ import java.io.IOException;
 public class Main extends Application
 {
     public static Stage stage = new Stage();
+
     @Override
     public void start(Stage stage) throws IOException
     {
